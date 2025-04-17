@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src=".\hexgridcanvas.js"></script>
+    </head>
+    <style>
+
+        #layers{
+            position:relative;
+        }
+        #layers>*{
+            position:absolute;
+            top:0px;
+            left:0px;
+        }
+        .circ{
+            fill:#add8e67F;
+            
+        }
+        .circ-de-select{
+            fill:#add8e6AF!important;
+            stroke: #add8e6FF!important;
+            stroke-width: 4px!important;
+        }
+    </style>
+<body id="main-body" onkeydown = "selectWeapon(event.key)">
+
+    <div style="width:100%; height: 100px; border: 1px solid black;">
+        <svg id="panel" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <circle id="panel-select-1" class='circ' cy="50" r="50" cx="50"  onClick="selectWeapon(1)"/>
+            <circle id="panel-select-2" class='circ' cx="150" cy="50" r="50" onClick="selectWeapon(2)"/>
+            <circle id="panel-select-3" class='circ' cx="250" cy="50" r="50" onClick="selectWeapon(3)"/>
+            <circle id="panel-select-4" class='circ' cx="350" cy="50" r="50" onClick="selectWeapon(4)"/>
+        </svg> 
+    </div>
+    <div style="width:100%; height: 20px; border: 1px solid black;">
+      <span>Selected:</span><span id="wpn-txt"></span>
+  </div>
+    
+    <div id="layers">
+        
+        <canvas id="layer-base-hexes" width="1" height="1" style="border:1px solid black;">
+        </canvas>
+        <div id="layer-tokens"></div>
+
+        <svg id="layer-effects" height="1" width="1" xmlns="http://www.w3.org/2000/svg"></svg> 
+        <svg id="layer-interact" height="1" width="1" xmlns="http://www.w3.org/2000/svg">
+            <Path d="M100 100 L 200 200" stroke="black" stroke-width="4" class="linePath"/>
+            <defs>
+              <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" stop-color="red" />
+                <stop offset="100%" stop-color="blue" />
+              </radialGradient>
+              <radialGradient id="grad2" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" stop-color="#7FFF7F7F" />
+                <stop offset="100%" stop-color="#FFFFFF" />
+              </radialGradient>
+              <radialGradient id="gradBlackOutline" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="80%" stop-color="#00000000" />
+                <stop offset="100%" stop-color="#000000FF" />
+              </radialGradient>
+              <radialGradient id="gradBlackOutlineDouble" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="70%" stop-color="#00000000" />
+                <stop offset="80%" stop-color="black" />
+                <stop offset="100%" stop-color="#00000000" />
+              </radialGradient>
+              <radialGradient id="greenSelect" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="50%" stop-color="#70FF703F" />
+                <stop offset="80%" stop-color="#70FF70FF" />
+                <stop offset="100%" stop-color="#70FF707F" />
+              </radialGradient>
+              <radialGradient id="blueSelect" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="50%" stop-color="#7F7FFF7F" />
+                <stop offset="80%" stop-color="#7F7FFFFF" />
+                <stop offset="100%" stop-color="#7FFF7F7F" />
+              </radialGradient>
+
+            </defs>
+            
+        </svg>
+    </div>
+
+
+
+
+</body>
+</html>
