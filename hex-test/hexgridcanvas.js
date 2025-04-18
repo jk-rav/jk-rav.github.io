@@ -70,13 +70,13 @@ class HexGrid{
                 this.createButton(myNode)
         }}
         
-        //var myTest = GetSVG.circle(...this.getNode(4,4).oxy, this.hexShape.b*.5, "black")
+        var myTest = GetSVG.circle(...this.getNode(4,4).oxy, this.hexShape.b*.5, "black")
         myTest.id="turret"
         myTest.classList.add("turret")
         this.selWpnGroup="pistol"
         this.selWpnIndex=0
         //myTest.addEventListener("click",this.bulletStorm)
-        this.layers.interact.appendChild(myTest)
+        this.layers.effects.appendChild(myTest)
         this.turret = this.getNode(4,4)
     }
     getSelectedWpn(){
@@ -361,7 +361,7 @@ class HexNode{
         //engine.drawHex(this)
         //console.log(engine.hexes)
 
-        Effect.shoot(engine.getSelectedWpn(), engine.getNode(0,0).oxy, this.oxy)
+        Effect.shoot(engine.getSelectedWpn(), engine.turret.oxy, this.oxy)
 //        console.log("Neighbors of "+this.x+","+this.y+":")
         //this.setupNeighbors()
         //Effect.shot(0,0,400,400,1,200)//console.log(input)
