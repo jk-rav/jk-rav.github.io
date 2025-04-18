@@ -70,7 +70,7 @@ class HexGrid{
                 this.createButton(myNode)
         }}
         
-        var myTest = GetSVG.circle(...this.getNode(4,4).oxy, this.hexShape.b*.5, "black")
+        //var myTest = GetSVG.circle(...this.getNode(4,4).oxy, this.hexShape.b*.5, "black")
         myTest.id="turret"
         myTest.classList.add("turret")
         this.selWpnGroup="pistol"
