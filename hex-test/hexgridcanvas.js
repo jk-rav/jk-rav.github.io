@@ -9,7 +9,28 @@ function printCoords(coords){
 </canvas>
 
 */
+class Hexagon{
+    constructor(){
 
+    }
+    static nbCoords(){}
+    static pointCoords(){
+        return [[-0.5,-1],[0.5,-1],[1,0],[0.5,1],[-0.5,1],[-1,0]]
+    }
+    static edgeCoords(){
+        let myPoints = Hexagon.pointCoords()
+        let myEdges=[]
+        for (let i=0;i<6;i++){
+            let newX= (myPoints[i][0]+myPoints[(i+1)%6][0])/2
+            let newY= (myPoints[i][0]+myPoints[(i+1)%6][0])/2
+            myEdges.push([newX, newY])
+        }
+    }
+    static abRatio(){}
+    static getPoints(){}
+    static getNeighbors(){}
+    static getEdges(){}
+}
 class HexGrid{
     constructor(cols, rows, size, hexArray=[]){
         this.cols=cols
@@ -64,7 +85,7 @@ class HexGrid{
         for (let i=0;i<cols;i++){
             this.hexes.push([])
             for (let j=0;j<rows;j++){
-                let myNode=new HexNode(i, j, size)
+                let myNode=new HexNode(i, j, size, this.baseHex)
                 this.hexes[i].push(myNode)
                 this.drawHex(myNode)
                 this.createButton(myNode)
@@ -159,6 +180,10 @@ class HexGrid{
     drawHex(node){
         Render.polygonOutline(this.layers.baseHexes, this.baseHex, node.oxy, 1, "black")
     }
+    drawHexTriangles(node){
+        
+        Render.polygonOutline(this.layers.baseHexes, this.baseHex, node.oxy, 1, "black")
+    }
     createButton(node){
         var myTest = GetSVG.circle(...node.oxy, this.hexShape.b, "url(#gradBlackOutline)")
         myTest.classList.add("btn")
@@ -166,6 +191,7 @@ class HexGrid{
         this.layers.interact.appendChild(myTest)
     }
 }
+
 class Effect{
     static spread(acc){
         let mySpread = (Math.random()-0.5)*(1-acc)*engine.scale
@@ -177,48 +203,48 @@ class Effect{
     static shoot(projectile, origin, target){
         Effect.animateBullet(origin, target, projectile, projectile.shots)
     }
-//console.log(projectile)
 
 
     static testFunc01(){
-console.log("test")}
-
-static animateBullet(origin, target, bullet, shots){
-    console.log("TEST")
-    let x0=origin[0]
-    let y0=origin[1]
-    let dx=target[0]-origin[0]
-    let dy=target[1]-origin[1]
-    let dist = Math.sqrt((dx*dx+dy*dy))
-    let travelTime = dist/2;
-    for (let i=0;i<bullet.pellets;i++){
-        let x1=(target[0]+Effect.spread(bullet.acc))
-        let y1=(target[1]+Effect.spread(bullet.acc))
-        console.log("pellet!")
-        const myImpact = setTimeout(function(){Effect.impactBlast(x1, y1, 25, 200)}, travelTime);
-        const myCrater = setTimeout(function(){Effect.crater(x1, y1, 5, 2000)}, travelTime);
-        let myPellet=Effect.getPellet(...origin, bullet)
-        let myAnim = myPellet.animate(
-            [
-                {
-                // from
-                cx: x0+"px",
-                cy: y0+"px",
-                },
-                {
-                // to
-                cx: x1+"px",
-                cy: y1+"px",
-                },
-            ],
-            travelTime,
-            );
-            engine.layers.effects.appendChild(myPellet)
-            myAnim.addEventListener("finish", function(){myPellet.remove()})//Anim.fadeElem(myDot, 2000)})
+        console.log("test")
     }
-    shots--;
-    if(shots>0){setTimeout(function(){Effect.animateBullet(origin, target, bullet, shots)},(1000/bullet.rof))}
-}
+
+    static animateBullet(origin, target, bullet, shots){
+        console.log("TEST")
+        let x0=origin[0]
+        let y0=origin[1]
+        let dx=target[0]-origin[0]
+        let dy=target[1]-origin[1]
+        let dist = Math.sqrt((dx*dx+dy*dy))
+        let travelTime = dist/2;
+        for (let i=0;i<bullet.pellets;i++){
+            let x1=(target[0]+Effect.spread(bullet.acc))
+            let y1=(target[1]+Effect.spread(bullet.acc))
+            console.log("pellet!")
+            const myImpact = setTimeout(function(){Effect.impactBlast(x1, y1, 25, 200)}, travelTime);
+            const myCrater = setTimeout(function(){Effect.crater(x1, y1, 5, 2000)}, travelTime);
+            let myPellet=Effect.getPellet(...origin, bullet)
+            let myAnim = myPellet.animate(
+                [
+                    {
+                    // from
+                    cx: x0+"px",
+                    cy: y0+"px",
+                    },
+                    {
+                    // to
+                    cx: x1+"px",
+                    cy: y1+"px",
+                    },
+                ],
+                travelTime,
+                );
+                engine.layers.effects.appendChild(myPellet)
+                myAnim.addEventListener("finish", function(){myPellet.remove()})//Anim.fadeElem(myDot, 2000)})
+        }
+        shots--;
+        if(shots>0){setTimeout(function(){Effect.animateBullet(origin, target, bullet, shots)},(1000/bullet.rof))}
+    }
 
     static fadeElem(elem, time){
 
@@ -293,21 +319,23 @@ static animateBullet(origin, target, bullet, shots){
         return newP
     }
 
-        static getBullet(cx, cy){
-            var newElement = document.createElementNS("http://www.w3.org/2000/svg",'circle'); //Create a path in SVG's namespace
-            newElement.setAttribute("cx",cx);
-            newElement.setAttribute("cy",cy);
-            newElement.setAttribute("r",4);
-            newElement.style.stroke = "black"; //Set stroke colour
-            newElement.style.strokeWidth = 1; //Set stroke colour
-            newElement.style.fill = "darkgrey"; //Set stroke colour
-            newElement.style.strokeWidth = "1px"; //Set stroke width
-          //  myText.style="width:20px;height:20px;background-color:lightblue;top:0px;left:0px"
-            return newElement
-          }
+    static getBullet(cx, cy){
+        var newElement = document.createElementNS("http://www.w3.org/2000/svg",'circle'); //Create a path in SVG's namespace
+        newElement.setAttribute("cx",cx);
+        newElement.setAttribute("cy",cy);
+        newElement.setAttribute("r",4);
+        newElement.style.stroke = "black"; //Set stroke colour
+        newElement.style.strokeWidth = 1; //Set stroke colour
+        newElement.style.fill = "darkgrey"; //Set stroke colour
+        newElement.style.strokeWidth = "1px"; //Set stroke width
+        //  myText.style="width:20px;height:20px;background-color:lightblue;top:0px;left:0px"
+        return newElement
+        }
 }
+
 class HexNode{
-    constructor(col, row, scale){
+    constructor(col, row, scale, points){
+        this.points=points
         this.a=scale
         this.b=scale*0.8660254037844390;
         this.col=col;
@@ -320,7 +348,9 @@ class HexNode{
         this.oxy=[this.ox,this.oy]
         this.neighborCoords=[[0,-2],[1,1],[1,-1],[0,2],[-1,-1],[-1,1]]
         this.neighbors = []
-        
+        for(let i=0;i<6;i++){
+
+        }
         //this.testMe()
 
     }
@@ -454,20 +484,7 @@ if(num-1 < weapons.length){
     document.getElementById("wpn-txt").textContent=engine.getSelectedWpn().name
 }
 
-/*let myWpn = Object.keys(engine.wpn)[num-1]
-console.log("Selecting..."+Object.keys(engine.wpn)[num-1])
-if(num<weapons.length){
-getWpnBtn(engine.selectedWpn).classList.add("circ")
-getWpnBtn(engine.selectedWpn).classList.remove("circ-de-select")
-console.log(engine.selectedWpn=myWpn)
-getWpnBtn(myWpn).classList.add("circ-de-select")
-getWpnBtn(myWpn).classList.remove("circ")
-//console.log(weapons)
-//console.log(engine.selectedWpn)
-//console.log("---")
-console.log("You selected...#"+num)
-console.log((engine.wpn[weapons[num-1]]).name)
-}*/
+
 
 }
 var engine
@@ -479,60 +496,3 @@ window.onload= function(){
 }
 
 
-
-//function dr
-
-/*5
-function setHex(data){
-	var myHexShape=[]
-	data.hexShape.forEach(function(item){
-		myHexShape.push([item[0]*data.a,item[1]*data.b])
-	})
-	data.hex=myHexShape
-}
-
-function drawHex(data, coords){
-	var myHex=[];
-	const ox=data.a+data.dx*coords[0];
-	const oy=data.b+data.dy*coords[1]+data.b*(coords[0]%2);
-	drawShape(offsetShape(getHex(data),[ox,oy]))
-}
-
-
-function getHex(data){
-	var myHex=[]
-	data.hexShape.forEach(function(item){
-		myHex.push([item[0]*data.a,item[1]*data.b])
-	})
-	return myHex
-}
-
-*/
-
-/*
-const myScale=new scaleData()
-setHex(myScale)
-console.log("HEx:")
-console.log(myScale.hex)
-//drawHex(offsetHex(myScale.hex,[0,0]))
-
-//drawShape(offsetShape(hShape,[a,b]))
-
-//drawHex(myData,[0,0])
-
-//console.log(getHex(myScale))
-
-for(var i=0;i<10;i++){for(var j=0;j<10;j++){
-drawHex(myScale,[i,j])}}
-
-//console.log(myScale.hexpts)
-
-
-//Midpoint= a,b
-//const hShape = [[ha*0.5,0],[stepx,0],[ha*2,hb],[stepx,hb*2],[ha*0.5,hb*2],[0,hb]];	
-
-
-
-ctx.fillStyle = "lightblue";
-//repeatShape(hxC, [10,8], [dx,dy],b, [a,b])
-*/
