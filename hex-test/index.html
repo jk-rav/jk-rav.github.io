@@ -39,8 +39,9 @@
 
     <div class="top-panel">
       
-      <div style="height:100%; width: 100px; border: 1px solid red;">
-        <img style="width:90px; height: 90px;" src=".\asset\guy\rifle\idle\survivor-idle_rifle_0.png"/>
+      <div style="height:100%; width: 100px; border: 1px solid red;background-color:lightblue">
+        <img id="myGuyAnimFeet" style="width:90px; height: 90px; position:absolute; height:45px; width:45px;top:45px;left:30px" src=""/>
+        <img id="myGuyAnim" style="width:90px; height: 90px; position:absolute;" src=""/>
       </div>
         <svg id="panel" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
             <circle id="panel-select-1" class='circ' cy="50" r="50" cx="50"  onClick="selectWeapon(1)"/>
@@ -57,7 +58,7 @@
         
         <canvas id="layer-base-hexes" width="1" height="1" style="border:1px solid black;">
         </canvas>
-        <div id="layer-tokens"></div>
+        <div id="layer-tokens" style="border: 2px solid red"></div>
 
         <svg id="layer-effects" height="1" width="1" xmlns="http://www.w3.org/2000/svg"></svg> 
         <svg id="layer-hex-super" height="1" width="1" xmlns="http://www.w3.org/2000/svg"></svg> 

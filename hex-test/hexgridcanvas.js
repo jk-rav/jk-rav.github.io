@@ -82,15 +82,17 @@ class HexGrid{
         this.layers.baseHexesCanvas.style=/*"width:"+this.cwidth+"px; height:"+this.cheight+"px; */"border: 1px solid black"
         this.layers.baseHexes=this.layers.baseHexesCanvas.getContext("2d")
 
+        
         this.layers.tokens = document.getElementById("layer-tokens")
-        this.layers.tokens.style.width=this.cwidth;
-        this.layers.tokens.style.height=this.cheight;
+        this.layers.tokens.style.width=this.cwidth + "px";
+        this.layers.tokens.style.height=this.cheight + "px";
 
         this.layers.effects = document.getElementById("layer-effects")
         this.layers.effects.setAttribute('width', this.cwidth);
         this.layers.effects.setAttribute('height', this.cheight);
         this.layers.effects.setAttribute('viewbox', '0,0,'+this.cwidth+','+this.cheight);
 
+        
         this.layers.overHex = document.getElementById("layer-hex-super");
         //this.baseSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         //this.baseSVG.setAttribute('style', 'border: 1px solid purple');
@@ -150,8 +152,22 @@ class HexGrid{
         }}    
     }
     
+    qAnimation(){
+
+    }
+    animateGuy(tok){
+        //<img id="myGuyAnim" style="width:90px; height: 90px;" src=".\asset\guy\rifle\idle\survivor-idle_rifle_0.png"/>
+
+        let myGuy = document.getElementById("myGuyAnim")
+        myGuy.src=tok.getFrame()
+        let myGuyFeet = document.getElementById("myGuyAnimFeet")
+        myGuyFeet.src=tok.getFeetFrame()
+        
+        
+    }
     animateTokens(){
-        if(this.effects.pending){
+        engine.animateGuy(tokens[0])
+        /*if(this.effects.pending){
             for(let i=0;i<this.effects.queue.length;i++){
                 //resolve effect
             }
@@ -163,8 +179,8 @@ class HexGrid{
             }
         }
         animCounter++
-        //console.log(animCounter)
-        requestAnimationFrame(animateTokens)
+        //console.log(animCounter)*/
+        requestAnimationFrame(engine.animateTokens)
     }
 
     getSelectedWpn(){
@@ -206,7 +222,9 @@ class HexGrid{
 
     }
 
+    getGuyFrame(guy, wpn, pose, current){
 
+    }
     getNode(col,row){
         //console.log(this.hexes[col][row])
         return this.hexes[col][row]
@@ -667,16 +685,34 @@ let tokenNames={
 }
 class Token{
     constructor(path, name, animations){
+        this.path=path
         this.name=name
         this.animations=animations
         this.currentState="rifle"
-        this.currentAnim="idle"
+        this.currentAnim="move"
         this.currentFrame=0
-
+        this.maxFrames=this.animations[this.currentState][this.currentAnim]
         this.switch=false
-        this.next="idle"
-        this.defaultAnim="idle"
+        this.next="move"
+        this.defaultAnim="move"
+        this.speedFactor=4
+        this.subFrame=0
     }
+    getImage(path, name, anim, state, frame){
+        return path+name+"-"+anim+"_"+state+"_"+frame
+    }
+    advanceFrame(){
+
+        this.subFrame = (this.subFrame+1)%this.speedFactor
+
+        if(this.subFrame==0){
+            return true
+        } else {
+            return false
+        }
+        
+    }
+    
     getFrame(){
         if(this.switch){
             this.currentAnim=this.next
@@ -684,14 +720,35 @@ class Token{
             this.switch=false
             this.next=""
             this.currentFrame=0
-            return this.name+"-"+this.currentAnim+"_"+this.currentState+"_0"
+            return this.getImage(this.path, this.name, this.currentAnim, this.currentState, 0)
+            //return this.name+"-"+this.currentAnim+"_"+this.currentState+"_0"
         } else {
             //cycle frame
-            let nextFrame=(this.currentFrame+1)%this.maxFrames
-            return this.name+"-"+this.currentAnim+"_"+this.currentState+"_0"
+            //console.log(this.getImage(this.path, this.name, this.currentAnim, this.currentState, this.currentFrame))
+            //console.log(this.currentFrame+1)
+            let myFramePath=this.getImage(this.path, this.name, this.currentAnim, this.currentState, this.currentFrame+".png")
+
+            if(this.advanceFrame()){
+
+                this.currentFrame=(this.currentFrame+1)%this.maxFrames
+            } else {
+
+            }
+            return myFramePath
         }
     }
-
+    getFeetFrame(){
+        let mode=this.animations.feet[this.currentAnim]
+        console.log(mode)
+        if(mode=="idle"){
+            return "./asset/survivor/survivor-idle_0.png"
+        } else {
+            return "./asset/survivor/survivor-run_"+this.currentFrame+".png"
+        }
+    }
+    getNextImg(){
+        return this.path+this.currentState+"/"+this.name+"-"+this.currentAnim+".png"
+    }
 }
 
 let survivorAnimations={
@@ -700,24 +757,26 @@ let survivorAnimations={
     handgun:{idle:20,meleeattack:15,move:20,reload:15, shoot:3},
     knife:{idle:20,meleeattack:15,move:20},
     flashlight:{idle:20,meleeattack:15,move:20},
+    feet:{idle:"idle",meleeattack:"idle",reload:"idle",shoot:"idle",move:"walk"}
 }
-//let survivor = new Token(survivorAnimations)
-let tokens=[new Token("survivor", survivorAnimations)]
 
-function animateTokens(){
-    if(en)
-    animCounter++
-    //console.log(animCounter)
-    requestAnimationFrame(animateTokens)
-}
+//let survivor = new Token(survivorAnimations)
+let tokens=[new Token("./asset/survivor/", "survivor", survivorAnimations)]
+
+
 var engine
 
 window.onload= function(){
+    console.log("does this run?")
     //document.getElementById("main-body").addEventListener("onkeydown", (e) => {selectWeapon()})
     engine = new HexGrid(12,12,40)
     engine.selectWpn("pistol")
     console.log("test")
-    //animateTokens()
+    console.log(tokens)
+    //let myGuyFeet = document.getElementById("myGuyAnimFeet")
+    //myGuyFeet.src="./asset/survivor/survivor-idle_0.png"
+    //tokens[0].getFeetFrame()
+    engine.animateTokens()
 }
 
 
