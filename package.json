@@ -1,5 +1,24 @@
 {
   "dependencies": {
     "firebase": "^11.9.1"
-  }
+  },
+  "name": "jk-rav.github.io",
+  "version": "1.0.0",
+  "description": "no additional information",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jk-rav/jk-rav.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jk-rav/jk-rav.github.io/issues"
+  },
+  "homepage": "https://github.com/jk-rav/jk-rav.github.io#readme"
 }
