@@ -1,7 +1,7 @@
 {
   "hosting": {
     "site": "nf-reno",
-    "public": "public",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
