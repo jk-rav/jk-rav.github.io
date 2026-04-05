@@ -4,9 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New index</title>
+<style>
+*{box-sizing:border-box;}
+.g{display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+&>*{border:1px solid black;)}
+}
+</style>
   </head>
   <body>
 <div>INDEX (ing)...</div>
+<div class="g">
+<div> test </div>
+</div>
 <script type="module">
     import { name, testFunc} from './modules/test.mjs';
     console.log("testing...")
