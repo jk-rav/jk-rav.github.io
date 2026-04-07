@@ -10,7 +10,8 @@
 padding:4px;
   gap: 2px;
   grid-template-columns: repeat(16, 1fr);
-grid-template-rows: repeat(8, minmax(12px, 1fr));
+grid-template-rows: repeat(8, 1fr);
+aspect-ratio:2;
 border: 2px dotted Black;
 &>*{border:1px dotted lightgrey;}
 }
@@ -19,10 +20,11 @@ border: 2px dotted Black;
   <body>
 <div>INDEX (ing)...</div>
 <div class="g">
-<div style="grid-column: 1 / 6;grid-row: 1 / 8;"></div>
+<div style="grid-column: 1 / 6;grid-row: 1 / 9;"></div>
 <div style="grid-column: 6 / 17;grid-row: 1 / 2;"></div>
 <div style="grid-column: 6 / 17;grid-row: 2 / 4;"></div>
 <div style="grid-column: 6 / 17;grid-row: 4 / 9;"></div>
+<!--div> </div><div> </div><div> </div><div> </div>
 <div> </div><div> </div><div> </div><div> </div>
 <div> </div><div> </div><div> </div><div> </div>
 <div> </div><div> </div><div> </div><div> </div>
@@ -30,8 +32,7 @@ border: 2px dotted Black;
 <div> </div><div> </div><div> </div><div> </div>
 <div> </div><div> </div><div> </div><div> </div>
 <div> </div><div> </div><div> </div><div> </div>
-<div> </div><div> </div><div> </div><div> </div>
-<!--div> test 5678 </div>
+<div> test 5678 </div>
 <div> test 9012 </div>
 <div> test 1234 </div>
 <div> test 5678 </div>
