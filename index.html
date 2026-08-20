@@ -14,7 +14,8 @@ test
     import { name, testFunc, getpoly} from './modules/test.mjs';
     console.log("testing...")
     testFunc(name);
-document.querySelector("#clog").innerText = "changed" 
+let mypts = [[0,1],[2,3]]
+document.querySelector("#clog").innerText = getPoly(mypts)
 
 </script>
   </body>
